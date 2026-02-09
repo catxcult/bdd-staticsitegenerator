@@ -5,7 +5,7 @@ from htmlnode import HTMLNode
 class TestHTMLNode(unittest.TestCase):
     def test_eq(self):
         node = HTMLNode("tag", "value", [], {"href": "https://www.google.com", "target": "_blank",})
-        node2 = node = HTMLNode("tag", "value", [], {"href": "https://www.google.com", "target": "_blank",})
+        node2 = HTMLNode("tag", "value", [], {"href": "https://www.google.com", "target": "_blank",})
         self.assertEqual(node, node2)
     
     def test_not_eq(self):
@@ -24,8 +24,8 @@ class TestHTMLNode(unittest.TestCase):
 
     def test_repr(self):
         node = HTMLNode("tag", "value", [], {"href": "https://www.google.com"})
-        repr_text = "HTMLNode(tag, value, [], \" href=\"https://www.google.com\"\")"
-        self.assertEqual(f"{node}", repr_text)
+        repr_text = "HTMLNode(tag, value, [], {'href': 'https://www.google.com'})"
+        self.assertEqual(repr(node), repr_text)
 
 if __name__ == "__main__":
     unittest.main()
