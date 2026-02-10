@@ -2,6 +2,17 @@ from htmlnode import LeafNode
 from textnode import TextNode, TextType
 from helpers import extract_markdown_images, extract_markdown_links
 
+def markdown_to_blocks(markdown):
+    markdown = markdown.replace("\r\n", "\n")
+    blocks = []
+    sections = markdown.split("\n\n")
+    for section in sections:
+        section = section.strip()
+        if section == "":
+            continue
+        blocks.append(section)
+    return blocks
+
 def text_node_to_html_node(text_node):
     tag = None
     value = None
