@@ -2,7 +2,7 @@ import unittest
 
 from textnode import TextNode, TextType
 from transformers import split_nodes_delimiter, split_nodes_image, split_nodes_link, text_to_textnodes, markdown_to_blocks, markdown_to_html_node
-from helpers import extract_markdown_images, extract_markdown_links
+from helpers import extract_markdown_images, extract_markdown_links, extract_title
 from blocks import BlockType, block_to_block_type
 
 class TestTransformers(unittest.TestCase):
@@ -627,6 +627,43 @@ this is paragraph text
             html,
             "<div><ol><li>This is an</li><li>ordered list</li><li>with <b>bold</b> text</li></ol></div>",
         )
+
+    ## Title
+    def test_extract_title_simple(self):
+        result = extract_title("# My Title")
+        self.assertEqual(result, "My Title")
+
+    def test_extract_title_no_h1(self):
+        with self.assertRaises(Exception):
+            extract_title("No header here")
+
+    def test_extract_title_h1_not_first_line(self):
+        md = """
+This is some crazy text
+# This is a title
+"""
+
+        result = extract_title(md)
+        self.assertEqual(result, "This is a title")
+
+    def test_extract_title_h1_no_space(self):
+        md = """
+
+        
+#This is a title
+"""
+        with self.assertRaises(Exception):
+            extract_title(md)
+
+    def test_extract_title_h2_before(self):
+        md = """
+## This is a fake title
+# This is a title
+"""
+
+        result = extract_title(md)
+        self.assertEqual(result, "This is a title")
+
         
 if __name__ == "__main__":
     unittest.main()
